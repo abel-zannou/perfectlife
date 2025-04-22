@@ -1,0 +1,120 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function UpdateProductForm({ productId }) {
+    const [departements, setDepartements] = useState([]);
+    const [form, setForm] = useState({
+        product_name: '',
+        product_image: null,
+        price: '',
+        special_price: '',
+        brand: '',
+        departement_id: '',
+        remark: '',
+        star: 0
+    });
+
+    useEffect(() => {
+        // Charger les départements
+        axios.get('/api/departements')
+            .then(response => setDepartements(response.data))
+            .catch(error => console.error('Erreur de chargement des départements:', error));
+
+        // Charger les infos du produit
+        axios.get(`/api/products/${productId}`)
+            .then(response => setForm(response.data))
+            .catch(error => console.error('Erreur de chargement du produit:', error));
+    }, [productId]);
+
+    const handleChange = e => {
+        const { name, value, files } = e.target;
+        setForm(prev => ({
+            ...prev,
+            [name]: files ? files[0] : value
+        }));
+    };
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+
+        const data = new FormData();
+        data.append('product_name', form.product_name);
+        if (form.product_image instanceof File) {
+            data.append('product_image', form.product_image);  // Fichier image
+        } else {
+            data.append('product_image', form.product_image);  // URL image
+        }
+        data.append('price', form.price);
+        data.append('special_price', form.special_price);
+        data.append('brand', form.brand);
+        data.append('departement_id', form.departement_id);
+        data.append('remark', form.remark);
+        data.append('star', form.star);
+
+        try {
+            const res = await axios.post(`/api/products/update/${productId}`, data, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            alert(res.data.message);
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour:', error.response?.data || error.message);
+            alert('Erreur : ' + (error.response?.data.message || error.message));
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label>Nom du produit:</label>
+                <input type="text" name="product_name" value={form.product_name} onChange={handleChange} />
+            </div>
+
+            <div>
+                <label>Image du produit:</label>
+                <input type="file" name="product_image" onChange={handleChange} />
+                {typeof form.product_image === 'string' && (
+                    <div><img src={form.product_image} alt="Aperçu" width={150} /></div>
+                )}
+            </div>
+
+            <div>
+                <label>Prix:</label>
+                <input type="number" name="price" value={form.price} onChange={handleChange} />
+            </div>
+
+            <div>
+                <label>Prix spécial:</label>
+                <input type="number" name="special_price" value={form.special_price} onChange={handleChange} />
+            </div>
+
+            <div>
+                <label>Marque:</label>
+                <input type="text" name="brand" value={form.brand} onChange={handleChange} />
+            </div>
+
+            <div>
+                <label>Département:</label>
+                <select name="departement_id" value={form.departement_id} onChange={handleChange}>
+                    <option value="">-- Choisir un département --</option>
+                    {departements.map(dep => (
+                        <option key={dep.id} value={dep.id}>{dep.departement_name}</option>
+                    ))}
+                </select>
+            </div>
+
+            <div>
+                <label>Remarque:</label>
+                <textarea name="remark" value={form.remark} onChange={handleChange} />
+            </div>
+
+            <div>
+                <label>Étoiles:</label>
+                <input type="number" name="star" value={form.star} onChange={handleChange} min="0" max="5" />
+            </div>
+
+            <button type="submit">Mettre à jour le produit</button>
+        </form>
+    );
+}
+
+export default UpdateProductForm;
