@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateProductRequest;
 use App\Models\Departement;
 use App\Models\Product;
+use App\Models\ProductDetail;
 use App\Trait\HandleProductImage;
 use Illuminate\Http\Request;
 // use Image;
@@ -60,7 +61,7 @@ class ProductController extends Controller
                     ->limit(4)
                     ->get();
 
-        // Si moins de 10 résultats, compléter avec d'autres produits en stock (autres départements)
+        // Si moins de 4 résultats, compléter avec d'autres produits en stock (autres départements)
         if ($products->count() < 4) {
             $remaining = 4 - $products->count();
 
@@ -116,6 +117,20 @@ class ProductController extends Controller
                 'star'              => $request->star ?? 0, // Valeur par défaut
             ]);
 
+            //Product details insertion
+
+            $imageOne_Url = $this->handleProductImage($request->image_one);
+            $imageTwo_Url = $this->handleProductImage($request->image_two);
+
+            $productDetail = ProductDetail::create([
+                'product_id' => $product->id,
+                'image_one' => $imageOne_Url,
+                'image_two' => $imageTwo_Url,
+                'short_description' => $request->short_description,
+                'long_description' => $request->long_description,
+                'product_weight' => $request->product_weight,
+            ]);
+
             return response()->json([
                 'message' => 'Produit créé avec succès.',
                 'product' => $product,
@@ -140,6 +155,7 @@ class ProductController extends Controller
     {
         try {
             $product = Product::findOrFail($id);
+            $productDetail = ProductDetail::where('product_id', $id)->first();
 
             // Si departement_id est fourni, on le vérifie.
             if ($request->has('departement_id')) {
@@ -169,6 +185,27 @@ class ProductController extends Controller
             if ($request->has('star')) $product->star = $request->star;
 
             $product->save();
+
+            //Mise a jour de product Detail
+            if($productDetail){
+                if ($request->has('image_one')) {
+                    $imageUrl = $this->handleProductImage($request->image_one);
+     
+                    $productDetail->image_one = $imageUrl;
+                }
+    
+                if ($request->has('image_two')) {
+                $imageUrl = $this->handleProductImage($request->image_two);
+    
+                $productDetail->image_two = $imageUrl;
+                }
+    
+                if ($request->has('short_description')) $productDetail->short_description = $request->short_description;
+                if ($request->has('long_description')) $productDetail->long_description = $request->long_description;
+                if ($request->has('product_weight')) $productDetail->product_weight = $request->product_weight;
+
+                $productDetail->save();
+            }
 
             return response()->json([
                 'message' => 'Le produit a été mis à jour avec succès.',

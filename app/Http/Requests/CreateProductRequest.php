@@ -52,6 +52,8 @@ class CreateProductRequest extends FormRequest
             'remark' => 'nullable|string',
             'star' => 'nullable|string',
 
+            
+
         ];
     }
 }

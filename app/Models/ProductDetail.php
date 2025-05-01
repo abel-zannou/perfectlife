@@ -14,8 +14,9 @@ class ProductDetail extends Model
         'image_one',
         'image_two',
         'short_description',
+        'long_description',
         'product_weight',
-        'product_code',
+        // 'product_code',
     ];
 
     protected $with = [];

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('short_description');
             $table->text('long_description');
             $table->string('product_weight');
-            $table->string('product_code');
+            //$table->string('product_code');
             $table->timestamps();
         });
     }
