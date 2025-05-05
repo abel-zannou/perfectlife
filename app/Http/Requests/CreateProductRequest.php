@@ -45,10 +45,8 @@ class CreateProductRequest extends FormRequest
 
             // 'product_code' => 'required|string',
             'price' => 'required|string',
-            'special_price' => 'required|string',
             'brand' => 'required|string',
             'departement_id' => 'required|exists:departements,id',
-            // 'departement_name' => 'required',
             'remark' => 'nullable|string',
             'star' => 'nullable|string',
 

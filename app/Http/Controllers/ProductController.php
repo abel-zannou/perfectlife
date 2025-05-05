@@ -111,9 +111,9 @@ class ProductController extends Controller
                 'price'             => $request->price,
                 'special_price'     => $request->special_price,
                 'brand'             => $request->brand,
+                'product_size'      => $request->product_size,
                 'departement_id'    => $departement->id,
                 'remark'            => $request->remark,
-                // 'product_code'      => $uniqueCode,
                 'star'              => $request->star ?? 0, // Valeur par défaut
             ]);
 
@@ -128,7 +128,7 @@ class ProductController extends Controller
                 'image_two' => $imageTwo_Url,
                 'short_description' => $request->short_description,
                 'long_description' => $request->long_description,
-                'product_weight' => $request->product_weight,
+                'product_size' => $request->product_size,
             ]);
 
             return response()->json([
@@ -202,7 +202,7 @@ class ProductController extends Controller
     
                 if ($request->has('short_description')) $productDetail->short_description = $request->short_description;
                 if ($request->has('long_description')) $productDetail->long_description = $request->long_description;
-                if ($request->has('product_weight')) $productDetail->product_weight = $request->product_weight;
+                if ($request->has('product_size')) $productDetail->product_size = $request->product_size;
 
                 $productDetail->save();
             }

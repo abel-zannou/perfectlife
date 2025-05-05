@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->string('image_one');
             $table->string('image_two');
-            $table->string('short_description');
-            $table->text('long_description');
-            $table->string('product_weight');
-            //$table->string('product_code');
+            $table->string('image_three')->nullable();
+            $table->string('short_description')->nullable();
+            $table->text('long_description')->nullable();
+            $table->string('product_size')->nullable();
             $table->timestamps();
         });
     }

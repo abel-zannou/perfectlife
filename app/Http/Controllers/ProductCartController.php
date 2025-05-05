@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 
 class ProductCartController extends Controller
 {
-    public function allProduct()
-    {
-        $products = Product::all();
+    // public function allProduct()
+    // {
+    //     $products = Product::all();
 
-        return $products;
-    }
+    //     return $products;
+    // }
 
     public function AddToCard(Request $request, $id)
     {
@@ -36,17 +36,14 @@ class ProductCartController extends Controller
         ]);
 
         //calcule du prix
-        $price = $product->special_price !== "Na" ? $product->special_price : $product->price;
+        $price = $product->special_price !== null ? $product->special_price : $product->price;
         $total_price = $price * $request->quantity;
 
         $cartItem = ProductCart::create([
             'user_id' => $user->id,
             'email' => $user->email,
             'product_id' => $product->id,
-            'product_name' => $product->product_name,
-            'product_code' => $product->product_code,
-            'image' => $product->product_image,
-            'product_weight' => $request->product_weight ?? 'N/A',
+            'product_size' => $request->product_size,
             'quantity' => $request->quantity,
             'unite_price' => $price,
             'total_price' => $total_price,

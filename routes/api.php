@@ -42,6 +42,10 @@ Route::get('/produitsimilaire/{product_id}', [ProductController::class, 'similar
 //les Details d'un produit
 Route::get('/productdetail/{id}', [ProductDetailController::class, 'ProductDetail']);
 
+//Routes des traitements des Products dans la Carte
+//Ajout des produits dans la carte
+Route::post('/addtocard/{id}', [ProductCartController::class, 'AddToCard'])->middleware('auth:sanctum'); 
+Route::get('/cartcount', [ProductCartController::class, 'CartCount'])->middleware('auth:sanctum');
 
 
 //Private Routes 
@@ -101,10 +105,7 @@ Route::get('/reviewlist/{id}', [ProductReviewController::class, 'ReviewList']);
 //Toutes reviewer par produits 
 Route::post('/storereview/{id}', [ProductReviewController::class, 'StoreReview']);
 
-//Routes des traitements des Products dans la Carte
-//Ajout des produits dans la carte
-Route::post('/addtocard/{id}', [ProductCartController::class, 'AddToCard'])->middleware('auth:sanctum'); 
-Route::get('/cartcount', [ProductCartController::class, 'CartCount'])->middleware('auth:sanctum');
+
 //Liste panier par utilisateur
 Route::get('/panieruser', [ProductCartController::class, 'ListCart'])->middleware('auth:sanctum');
 //Supprimer un produit du panier

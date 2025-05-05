@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->string('product_name');
-            $table->string('image');
-            $table->string('product_code');
-            $table->string('email');
+            // $table->string('product_name');
+            // $table->string('image');
+            // $table->string('product_code');
+            // $table->string('email');
             $table->timestamps();
         });
     }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('product_name');
             $table->string('product_code');
-            $table->string('product_weight');
+            $table->string('product_size')->nullable();
             $table->string('quantity');
             $table->string('unite_price');
             $table->string('total_price');
