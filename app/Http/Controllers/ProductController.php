@@ -121,11 +121,13 @@ class ProductController extends Controller
 
             $imageOne_Url = $this->handleProductImage($request->image_one);
             $imageTwo_Url = $this->handleProductImage($request->image_two);
+            $imageThree_Url = $this->handleProductImage($request->image_three);
 
             $productDetail = ProductDetail::create([
                 'product_id' => $product->id,
                 'image_one' => $imageOne_Url,
                 'image_two' => $imageTwo_Url,
+                'image_three' => $imageThree_Url,
                 'short_description' => $request->short_description,
                 'long_description' => $request->long_description,
                 'product_size' => $request->product_size,
@@ -198,6 +200,12 @@ class ProductController extends Controller
                 $imageUrl = $this->handleProductImage($request->image_two);
     
                 $productDetail->image_two = $imageUrl;
+                }
+
+                if ($request->has('image_three')) {
+                    $imageUrl = $this->handleProductImage($request->image_three);
+        
+                    $productDetail->image_three = $imageUrl;
                 }
     
                 if ($request->has('short_description')) $productDetail->short_description = $request->short_description;

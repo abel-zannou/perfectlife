@@ -52,13 +52,13 @@ Route::get('/cartcount', [ProductCartController::class, 'CartCount'])->middlewar
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::middleware('role:user,admin,admin_master')->group(function () {
+    Route::middleware('role:user,admin,admin_master,drh')->group(function () {
         // Route commune à tous les utilisateurs authentifiés
         Route::post('/logout', [AuthController::class, 'logout']);
         
     });
 
-    Route::middleware('role:admin,admin_master')->group(function () {
+    Route::middleware('role:admin,admin_master,drh')->group(function () {
         Route::get('edit/departement/{departement_id}', [DepartementController::class, 'EditDepartement']);
         Route::post('/update/departement/{departement_id}', [DepartementController::class, 'updateDepartement']);
         Route::post('/create/departement', [DepartementController::class, 'createDepartement']);

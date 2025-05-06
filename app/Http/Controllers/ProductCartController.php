@@ -32,7 +32,7 @@ class ProductCartController extends Controller
         //Validation des données entrants
         $request->validate([
             'quantity' => 'required|integer|min:1',
-            'product_weight' => 'nullable|string|max:255',
+            'product_size' => 'nullable|string|max:255',
         ]);
 
         //calcule du prix
